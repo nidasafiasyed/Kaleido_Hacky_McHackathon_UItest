@@ -1,0 +1,47 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+function validateForm() {
+	console.log("in validateForm");
+    //var amt = document.forms["txForm"]["amtvalue"].value;
+	var amt = document.getElementById("amtvalue").value;
+	console.log(amt);
+    if (isNaN(amt) || amt < 0) {
+        alert("Amount is not valid");
+		return false;
+    }
+	console.log("before ajax call");
+		var sendValues = {
+            value: amt
+        }
+	 $.ajax({
+          url: '/govtcontract/set',
+          type: 'POST',
+		  dataType:'json',
+          data: JSON.stringify({
+            value: amt
+          }),
+          contentType: 'application/json',
+          success: function(got) {
+            return console.log("shortened url: " + got);
+          }
+    });
+
+	
+		
+	return true;
+}
+</script>
+</head>
+<body>
+<h1>Enter the transaction details below:</h1>
+<form name="txForm" action="http://127.0.0.1:3000/govtcontract/set" onsubmit="return validateForm()" method="post">
+Enter the amount:<br>
+<input type="number" name="amtvalue" id="amtvalue" value="0"/><br>
+
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
