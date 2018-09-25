@@ -1,0 +1,82 @@
+<html>
+<head>
+<script>
+function validateForm() {
+    var amt = document.forms["txForm"]["amtvalue"].value;
+    if (isNaN(amt) || amt < 0) {
+        alert("Amount is not valid");
+		return false;
+    }
+	
+	var letters = /^[A-Za-z]+$/;
+	var item = document.forms["txForm"]["whitelist"].value;
+    if (item == "") {
+        alert("Fill the expenditure purpose");
+		return false;
+    }
+	if (!item.match(/^[a-zA-Z]+$/))  {
+        alert("No numbers allowed for expenditure purpose");
+		return false;
+    }
+	var dateString = document.forms["txForm"]["dateval"].value;
+        var myDate = new Date(dateString);
+        var today = new Date();
+        if ( myDate > today ) { 
+            alert("Invalid date!")
+        }
+	
+    var radios = document.getElementsByName('depvalue');
+    var radiocheck = false;
+
+    for(var i=0; i<radios.length;i++){
+        if(radios[i].checked == true){
+            radiocheck = true;    
+        }
+    }
+        if(!radiocheck){
+            alert("Select the department");
+            return false;
+        }
+	
+	var zip = document.forms["txForm"]["locationval"].value;
+    if (isNaN(zip) || zip == "") {
+        alert("Zipcode is not valid");
+		return false;
+    }
+	
+	if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(zip)) {
+	    alert("Zipcode is not valid");
+	    return false;
+	}
+		
+	return true;
+}
+</script>
+</head>
+<body>
+<h1>Enter the transaction details below:</h1>
+<form name="txForm" action="localhost:3000/govtcontract/set" onsubmit="return validateForm()" method="post">
+Enter the amount:<br>
+<input type="number" name="amtvalue" value="0"/><br>
+Enter the Department ID:<br>
+<input type="radio" name="depvalue" value="105"/>Treasury<br>
+<input type="radio" name="depvalue" value="107"/>Justice<br>
+<input type="radio" name="depvalue" value="109"/>Agriculture<br>
+<input type="radio" name="depvalue" value="110"/>Commerce<br>
+<input type="radio" name="depvalue" value="111"/>Labor<br>
+<input type="radio" name="depvalue" value="106"/>Defense<br>
+<input type="radio" name="depvalue" value="112"/>Health and Human Services<br>
+<input type="radio" name="depvalue" value="114"/>Transportation<br>
+<input type="radio" name="depvalue" value="115"/>Energy<br>
+<input type="radio" name="depvalue" value="116"/>Education<br>
+Enter the purpose of the expenditure:<br>
+<input type="text" name="whitelist"/><br>
+Enter the date and time(0800 to 1800 hours):<br>
+<input type="date" name="dateval"/><br>
+<input type="time" name="timeval" min="08:00:00" max="18:00:00"/><br>
+Enter the location(zipcode):<br>
+<input type="number" name="locationval"/><br>
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>
